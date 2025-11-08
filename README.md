@@ -15,7 +15,6 @@
 
 ### ⚙️ Technology Stack Badges
 
-```markdown
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.13-blue?logo=python" alt="Python"/>
   <img src="https://img.shields.io/badge/FastAPI-Framework-green?logo=fastapi" alt="FastAPI"/>
@@ -24,7 +23,6 @@
   <img src="https://img.shields.io/badge/Neo4j-AuraDB-blue?logo=neo4j" alt="Neo4j"/>
   <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?logo=huggingface" alt="Hugging Face"/>
 </p>
-```
 
 ---
 
