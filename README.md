@@ -16,10 +16,6 @@
 ### ⚙️ Technology Stack Badges
 
 <p align="center">
-  <img src="https://img.shields.io/badge/🏆%20Finalist-All%20Pakistan%20AI%20Competition%202025-red?style=for-the-badge&logo=google" alt="AI Wrapper Finalist"/>
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python&logoSize=40" alt="Python"/>
   <img src="https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge&logo=fastapi&logoSize=40" alt="FastAPI"/>
   <img src="https://img.shields.io/badge/Streamlit-Dashboard-ff4b4b?style=for-the-badge&logo=streamlit&logoColor=white&logoSize=40" alt="Streamlit"/>
