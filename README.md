@@ -31,6 +31,19 @@
   <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?style=for-the-badge&logo=huggingface&logoSize=40" alt="Hugging Face"/>
 </p>
 
+<h4 align="center">Optional Technologies (Integration Ready)</h4>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Redis-Caching-DC382D?style=for-the-badge&logo=redis&logoColor=white&logoSize=40" alt="Redis"/>
+  <img src="https://img.shields.io/badge/API%20Limiter-Rate%20Control-9C27B0?style=for-the-badge&logo=apachesuperset&logoColor=white&logoSize=40" alt="API Limiter"/>
+  <img src="https://img.shields.io/badge/Kubernetes-Orchestration-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&logoSize=40" alt="Kubernetes"/>
+  <img src="https://img.shields.io/badge/Azure-Cloud%20Deployment-0089D6?style=for-the-badge&logo=microsoftazure&logoColor=white&logoSize=40" alt="Azure"/>
+  <img src="https://img.shields.io/badge/Databricks-Analytics-EF3B2D?style=for-the-badge&logo=databricks&logoColor=white&logoSize=40" alt="Databricks"/>
+  <img src="https://img.shields.io/badge/Apache%20Kafka-Data%20Streaming-231F20?style=for-the-badge&logo=apachekafka&logoColor=white&logoSize=40" alt="Apache Kafka"/>
+  <img src="https://img.shields.io/badge/Apache%20Airflow-Workflow%20Automation-017CEE?style=for-the-badge&logo=apacheairflow&logoColor=white&logoSize=40" alt="Apache Airflow"/>
+</p>
+
+
 
 
 
