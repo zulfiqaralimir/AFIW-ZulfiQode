@@ -1,70 +1,147 @@
-# AFIW-ZulfiQode
+## 🧠 AFIW–ZulfiQode: Agentic Financial, Credit, and Ethical Risk Intelligence Wrapper
 
-**Agentic Financial Intelligence Wrapper** - An AI-powered platform for ethical financial document analysis using GPT-4 and LangGraph.
+### *All Pakistan AI Competition 2025 – Ignite National Technology Fund (NICAT Islamabad)*
 
-## Features
+---
 
-- 📄 PDF and CSV document analysis
-- 🤖 Multi-agent pipeline (Planner → Executor → Verifier)
-- ⚖️ Ethical risk detection and bias auditing
-- 📊 Streamlit dashboard with visual analytics
-- 🚀 FastAPI backend with CORS support
+### 🏅 Competition Badge
 
-## Setup
-
-1. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Set environment variables:**
-   Create a `.env` file:
-   ```
-   OPENAI_API_KEY=sk-your-key-here
-   PROJECT_NAME=AFIW-ZulfiQode
-   ```
-
-3. **Run backend:**
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-
-4. **Run frontend (in another terminal):**
-   ```bash
-   streamlit run streamlit_app/dashboard.py
-   ```
-
-## Tech Stack
-
-- **Backend:** FastAPI + LangGraph + OpenAI GPT-4
-- **Frontend:** Streamlit
-- **Data Processing:** pdfplumber, pandas
-- **Visualization:** Plotly
-
-## Project Structure
-
-```
-app/
-├── agents/          # Multi-agent system (planner, executor, verifier)
-├── core/            # Logging and utilities
-├── data/            # PDF/CSV extractors
-├── evaluation/      # Metrics and evaluation
-├── models/          # Pydantic schemas
-└── main.py          # FastAPI application
-
-streamlit_app/
-└── dashboard.py     # Streamlit UI
-
-requirements.txt     # Python dependencies
+```markdown
+<p align="center">
+  <img src="https://img.shields.io/badge/🏆%20Finalist-All%20Pakistan%20AI%20Competition%202025-red?style=for-the-badge&logo=google" alt="AI Wrapper Finalist"/>
+</p>
 ```
 
-## API Endpoints
+---
 
-- `POST /analyze` - Analyze PDF and/or CSV files
-  - Request: multipart/form-data with `pdf_file` and/or `csv_file`
-  - Response: Analysis summary, ethical flags, and latency metrics
+### ⚙️ Technology Stack Badges
 
-## License
+```markdown
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13-blue?logo=python" alt="Python"/>
+  <img src="https://img.shields.io/badge/FastAPI-Framework-green?logo=fastapi" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/Grafana-Monitoring-orange?logo=grafana" alt="Grafana"/>
+  <img src="https://img.shields.io/badge/Prometheus-Metrics-orange?logo=prometheus" alt="Prometheus"/>
+  <img src="https://img.shields.io/badge/Neo4j-AuraDB-blue?logo=neo4j" alt="Neo4j"/>
+  <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?logo=huggingface" alt="Hugging Face"/>
+</p>
+```
 
-© 2025 Zulfiqar Ali Mir
+---
+
+### 📘 Overview
+
+AFIW–ZulfiQode is a next-generation AI-powered system that performs **ethical, credit, and financial risk analysis** through an **Agentic AI architecture** integrated with **econometric modeling**.
+
+It was developed for the **All Pakistan AI Competition 2025**, held at NICAT Islamabad, under the **Ignite National Technology Fund** initiative.
+
+---
+
+### 🧩 Core Architecture
+
+```
+Planner → Executor → Verifier → Judge
+             ↓
+ ✅ Quality Score | ⚠️ Bias Alert | 📊 Confidence Level
+```
+
+**Judge Agent** acts as a neutral critic reviewing:
+
+* Summaries for accuracy and hallucination
+* Risk scores for justification and bias
+* Recommendations for ethical compliance
+
+---
+
+### 🔍 Key Functionalities
+
+* Financial, Credit, and Ethical Risk scoring
+* Momentum calculator and 200-day moving average
+* PSX API integration (e.g., Hascol data)
+* Rumour authentication and tone analysis
+* Hallucination detection using LLM vs. Econometric model comparison
+* Bias calibration and confidence scoring
+* Conversational report generation with voice summary
+* Observability dashboard via Prometheus and Grafana
+
+---
+
+### 📊 Observability Metrics
+
+| Metric                       | Description                     |
+| ---------------------------- | ------------------------------- |
+| `request_latency_seconds`    | Measures API latency            |
+| `errors_total`               | Tracks request errors           |
+| `hallucination_alerts_total` | Counts hallucination detections |
+| `agent_tasks_total`          | Monitors executed agent actions |
+
+---
+
+### 📦 Folder Structure
+
+```
+AFIW_ZulfiQode_Final/
+├── app/
+│   ├── main.py
+│   ├── core/
+│   ├── agents/
+│   ├── data/
+│   ├── evaluation/
+│   └── models/
+├── streamlit_app/
+│   └── dashboard.py
+├── tests/
+│   └── test_app.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+### ⚡ Run Locally
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Prometheus → `http://localhost:9090`
+Grafana → `http://localhost:3000`
+Streamlit → `streamlit run streamlit_app/dashboard.py`
+
+---
+
+### 🧪 Testing
+
+```bash
+pytest
+```
+
+Output:
+
+```
+collected 3 items  
+3 passed in X.XXs
+```
+
+---
+
+### 🏁 Event Details
+
+| Field            | Information                                                               |
+| ---------------- | ------------------------------------------------------------------------- |
+| **Event**        | All Pakistan AI Competition 2025                                          |
+| **Organizer**    | Ignite – National Technology Fund                                         |
+| **Venue**        | NICAT – National Incubation Center for Aerospace Technologies, Rawalpindi |
+| **Date**         | 11th November 2025                                                        |
+| **Team ID**      | 726                                                                       |
+| **Team**         | Mir Global AI Lab                                                         |
+| **Project Lead** | Zulfiqar Ali Mir                                                      |
+
+---
+
+### 📞 Contact
+
+📧 **[manager.equity.finance@gmail.com](mailto:manager.equity.finance@gmail.com)**
+🌐 **GitHub:** [zulfiqaralimir](https://github.com/zulfiqaralimir)
+🏛️ **Organization:** Mir Global AI Lab
 
