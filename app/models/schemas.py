@@ -25,5 +25,7 @@ class AnalysisResponse(BaseModel):
     - Latency and performance metrics
     """
     summary: str
-    ethical_flags: Dict[str, Union[str, Dict[str, Union[int, bool]]]]
+    # Allow either a simple string ("Red Flag"/"Clear") or a detailed dict
+    # with numeric/boolean metrics and a string status field
+    ethical_flags: Dict[str, Union[str, Dict[str, Union[int, bool, str]]]]
     latency_ms: int
