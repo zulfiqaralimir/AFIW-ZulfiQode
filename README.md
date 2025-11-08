@@ -16,12 +16,12 @@
 ### ⚙️ Technology Stack Badges
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python" alt="Python" height="60">
-  <img src="https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge&logo=fastapi" alt="FastAPI" height="60">
-  <img src="https://img.shields.io/badge/Grafana-Monitoring-orange?style=for-the-badge&logo=grafana" alt="Grafana" height="60">
-  <img src="https://img.shields.io/badge/Prometheus-Metrics-orange?style=for-the-badge&logo=prometheus" alt="Prometheus" height="60">
+  <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python" alt="Python" height="100">
+  <img src="https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge&logo=fastapi" alt="FastAPI" height="100">
+  <img src="https://img.shields.io/badge/Grafana-Monitoring-orange?style=for-the-badge&logo=grafana" alt="Grafana" height="100">
+  <img src="https://img.shields.io/badge/Prometheus-Metrics-orange?style=for-the-badge&logo=prometheus" alt="Prometheus" height="100">
   <img src="https://img.shields.io/badge/Neo4j-AuraDB-blue?style=for-the-badge&logo=neo4j" alt="Neo4j" height="60">
-  <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?style=for-the-badge&logo=huggingface" alt="Hugging Face" height="60">
+  <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?style=for-the-badge&logo=huggingface" alt="Hugging Face" height="100">
 </p>
 
 
