@@ -6,11 +6,10 @@
 
 ### 🏅 Competition Badge
 
-```markdown
 <p align="center">
   <img src="https://img.shields.io/badge/🏆%20Finalist-All%20Pakistan%20AI%20Competition%202025-red?style=for-the-badge&logo=google" alt="AI Wrapper Finalist"/>
 </p>
-```
+
 
 ---
 
