@@ -1,44 +1,61 @@
-# Python
+# --- Python general ---
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+
+# --- Virtual environments ---
 venv/
 env/
 ENV/
 .venv
 
-# Environment variables
+# --- Environment variables ---
 .env
 .env.local
 
-# IDE
+# --- IDEs & Editors ---
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+# --- OS files ---
 .DS_Store
 Thumbs.db
 
-# Logs
+# --- Logs ---
 *.log
 
-# Distribution / packaging
+# --- Distribution / packaging ---
 dist/
 build/
 *.egg-info/
 
-# Jupyter Notebook
+# --- Jupyter Notebook ---
 .ipynb_checkpoints
 
-# Streamlit
+# --- Streamlit ---
 .streamlit/
 
-# Test coverage
+# --- Test coverage ---
 .coverage
 htmlcov/
 
+# --- Prometheus & Grafana data (optional local use) ---
+prometheus_data/
+grafana_data/
+
+# --- Cache ---
+*.tmp
+*.cache/
+*.pytest_cache/
+
+# ✅ KEEP THESE ALWAYS TRACKED ---
+!logo.png
+!README.md
+!requirements.txt
+!app/
+!streamlit_app/
