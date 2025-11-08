@@ -16,13 +16,21 @@
 ### ⚙️ Technology Stack Badges
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python" alt="Python" height="100">
-  <img src="https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge&logo=fastapi" alt="FastAPI" height="100">
-  <img src="https://img.shields.io/badge/Grafana-Monitoring-orange?style=for-the-badge&logo=grafana" alt="Grafana" height="100">
-  <img src="https://img.shields.io/badge/Prometheus-Metrics-orange?style=for-the-badge&logo=prometheus" alt="Prometheus" height="100">
-  <img src="https://img.shields.io/badge/Neo4j-AuraDB-blue?style=for-the-badge&logo=neo4j" alt="Neo4j" height="60">
-  <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?style=for-the-badge&logo=huggingface" alt="Hugging Face" height="100">
+  <img src="https://img.shields.io/badge/🏆%20Finalist-All%20Pakistan%20AI%20Competition%202025-red?style=for-the-badge&logo=google" alt="AI Wrapper Finalist"/>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python&logoSize=40" alt="Python"/>
+  <img src="https://img.shields.io/badge/FastAPI-Framework-green?style=for-the-badge&logo=fastapi&logoSize=40" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/Streamlit-Dashboard-ff4b4b?style=for-the-badge&logo=streamlit&logoColor=white&logoSize=40" alt="Streamlit"/>
+  <img src="https://img.shields.io/badge/OpenAI-API-black?style=for-the-badge&logo=openai&logoColor=white&logoSize=40" alt="OpenAI"/>
+  <img src="https://img.shields.io/badge/Docker-Containerization-2496ED?style=for-the-badge&logo=docker&logoColor=white&logoSize=40" alt="Docker"/>
+  <img src="https://img.shields.io/badge/Grafana-Monitoring-orange?style=for-the-badge&logo=grafana&logoSize=40" alt="Grafana"/>
+  <img src="https://img.shields.io/badge/Prometheus-Metrics-orange?style=for-the-badge&logo=prometheus&logoSize=40" alt="Prometheus"/>
+  <img src="https://img.shields.io/badge/Neo4j-AuraDB-blue?style=for-the-badge&logo=neo4j&logoSize=40" alt="Neo4j"/>
+  <img src="https://img.shields.io/badge/HuggingFace-Deployment-yellow?style=for-the-badge&logo=huggingface&logoSize=40" alt="Hugging Face"/>
+</p>
+
 
 
 
