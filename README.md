@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./logo.png" alt="AFIW–ZulfiQode Logo" width="350">
+</p>
+
 ## 🧠 AFIW–ZulfiQode: Agentic Financial, Credit, and Ethical Risk Intelligence Wrapper
 
 ### *All Pakistan AI Competition 2025 – Ignite National Technology Fund (NICAT Islamabad)*
