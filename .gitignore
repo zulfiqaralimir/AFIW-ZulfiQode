@@ -48,6 +48,9 @@ htmlcov/
 prometheus_data/
 grafana_data/
 
+# --- Vector database / local data ---
+data/
+
 # --- Cache ---
 *.tmp
 *.cache/
