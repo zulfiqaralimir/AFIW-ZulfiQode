@@ -1,31 +1,37 @@
-from fastapi import FastAPI, UploadFile, File, Request
+"""
+FastAPI Application for Lawyer-AI v9.0
+Simplified backend with single PDF upload endpoint
+"""
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response, JSONResponse
-import time
-import logging
-
-import app.settings as settings
-from app.models.schemas import AnalysisResponse
+from app.agents.lawyer_ai import LawyerAIOrchestrator
 from app.core.logger import setup_logging
-from app.core.middleware import ObservabilityMiddleware
-from app.core.metrics import MetricsCollector, AGENT_TASKS, REQUEST_LATENCY, ERROR_COUNT
-from app.core import metrics as metrics_module
-from app.data.extractor import extract_text_from_pdf, extract_data_from_csv
-from app.data.youtube import fetch_youtube_transcript_from_pdf
-from app.agents.graph import run_agent_pipeline
+from app.core.metrics import start_prometheus_server
+from app.models.schemas import FeedbackRequest
+import json
+import time
+import os
 
-# Initialize structured logging
-setup_logging(level="INFO", json_format=True)
-logger = logging.getLogger(__name__)
-metrics = MetricsCollector()
+# ---------------------------
+# Initialize FastAPI App
+# ---------------------------
+app = FastAPI(
+    title="Lawyer-AI Financial Ethics & Risk Analyzer",
+    description="Analyzes corporate ethics, risk, and financial integrity based on PDF reports + live market data.",
+    version="9.0"
+)
 
-# Create FastAPI app
-app = FastAPI(title=settings.PROJECT_NAME)
+# ---------------------------
+# Prometheus metrics setup
+# ---------------------------
+# ✅ Setup metrics before defining routes
+instrumentator = Instrumentator().instrument(app)
+instrumentator.expose(app, include_in_schema=False, should_gzip=True)
 
-# Add observability middleware (must be before CORS)
-app.add_middleware(ObservabilityMiddleware)
-
-# Enable CORS for local development (tighten in production)
+# ---------------------------
+# Enable CORS for Streamlit
+# ---------------------------
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -34,187 +40,114 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include metrics router
-app.include_router(metrics_module.router)
+# ---------------------------
+# Logging & Prometheus
+# ---------------------------
+setup_logging()
+start_prometheus_server(9000)
 
-# Health check endpoint
-@app.get("/health")
-async def health():
-    """Health check endpoint for monitoring"""
-    return {"status": "healthy", "service": settings.PROJECT_NAME}
-
-# Main analyze route with PDF + CSV support
-@app.post("/analyze", response_model=AnalysisResponse)
-async def analyze(
-    request: Request,
-    pdf_file: UploadFile = File(None),
-    csv_file: UploadFile = File(None)
-):
-    request_id = getattr(request.state, "request_id", "unknown")
-    start_time = time.time()
-    file_types = []
+# ---------------------------
+# API Endpoint: Analyze Company Report
+# ---------------------------
+@app.post("/lawyer_ai/analyze")
+async def analyze_pdf(file: UploadFile = File(...)):
+    """
+    Uploads a company's annual report (PDF) and returns a structured JSON output
+    following Lawyer-AI v9.0 schema.
+    """
     
-    logger.info(
-        "Analysis request started",
-        extra={
-            "request_id": request_id,
-            "has_pdf": pdf_file is not None,
-            "has_csv": csv_file is not None,
-            "component": "analyze"
-        }
-    )
+    start_time = time.time()
+    file_bytes = await file.read()
+    
+    # Initialize orchestrator
+    orchestrator = LawyerAIOrchestrator()
     
     try:
-        # Increment agent tasks counter
-        AGENT_TASKS.inc()
+        result = orchestrator.run_analysis(file_bytes, file.filename)
         
-        # Step 1: Extract data from uploaded files
-        pdf_text = ""
-        csv_summary = ""
-
-        if pdf_file:
-            file_types.append("pdf")
-            logger.debug(f"Processing PDF: {pdf_file.filename}", extra={"request_id": request_id})
-            pdf_bytes = await pdf_file.read()
-            pdf_text = extract_text_from_pdf(pdf_bytes)
-            logger.debug(f"PDF extracted: {len(pdf_text)} chars", extra={"request_id": request_id})
-
-        if csv_file:
-            file_types.append("csv")
-            logger.debug(f"Processing CSV: {csv_file.filename}", extra={"request_id": request_id})
-            csv_bytes = await csv_file.read()
-            df = extract_data_from_csv(csv_bytes)
-            csv_summary = df.describe().to_string()
-            logger.debug(f"CSV processed: {len(df)} rows", extra={"request_id": request_id})
-
-        # Step 2: Combine data into one text blob
-        combined_input = pdf_text + "\n\n" + csv_summary
-        
-        if not combined_input.strip():
-            logger.warning("Empty input received", extra={"request_id": request_id})
-            return JSONResponse(
-                status_code=400,
-                content={"error": "No content extracted from uploaded files"}
-            )
-
-        # Step 3: Run through multi-agent system
-        logger.info("Running agent pipeline", extra={"request_id": request_id})
-        agent_results = run_agent_pipeline(combined_input)
-        logger.info("Agent pipeline completed", extra={"request_id": request_id})
-
-        # Step 4: Format output
-        summary_text = "\n".join([f"[{step['task']}]\n{step['result']}" for step in agent_results['steps']])
-        latency = int((time.time() - start_time) * 1000)
-        
-        # Record metrics
-        file_type_str = "+".join(file_types) if file_types else "none"
-        metrics.record_analysis(file_type_str, "success", time.time() - start_time)
-        
-        logger.info(
-            "Analysis completed successfully",
-            extra={
-                "request_id": request_id,
-                "duration_ms": latency,
-                "file_types": file_type_str,
-                "component": "analyze"
-            }
-        )
-
-        return AnalysisResponse(
-            summary=summary_text,
-            ethical_flags=agent_results["flags"],
-            latency_ms=latency
-        )
-        
-    except Exception as e:
-        duration = time.time() - start_time
-        error_type = type(e).__name__
-        
-        # Record error metrics
-        file_type_str = "+".join(file_types) if file_types else "none"
-        metrics.record_analysis(file_type_str, "error", duration)
-        metrics.record_error(error_type, "analyze")
-        
-        logger.error(
-            f"Analysis failed: {str(e)}",
-            extra={
-                "request_id": request_id,
-                "error_type": error_type,
-                "duration_ms": int(duration * 1000),
-                "component": "analyze"
-            },
-            exc_info=True
-        )
-        
-        # Record error
-        ERROR_COUNT.inc()
-        
-        return JSONResponse(
-            status_code=500,
-            content={"error": f"Analysis failed: {str(e)}"}
-        )
-    finally:
-        # Record request latency
-        duration = time.time() - start_time
-        REQUEST_LATENCY.observe(duration)
-
-
-# Analyze YouTube video transcript from PDF about PSX
-@app.post("/analyze_youtube")
-async def analyze_youtube(request: Request, pdf_file: UploadFile = File(...)):
-    request_id = getattr(request.state, "request_id", "unknown")
-    start_time = time.time()
-    logger.info("YouTube transcript analysis started", extra={"request_id": request_id, "filename": pdf_file.filename})
-    
-    try:
-        # Increment agent tasks counter
-        AGENT_TASKS.inc()
-        # Save uploaded PDF temporarily
-        import tempfile
-        import os
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-            pdf_bytes = await pdf_file.read()
-            tmp_file.write(pdf_bytes)
-            tmp_path = tmp_file.name
-        
-        try:
-            transcript = fetch_youtube_transcript_from_pdf(tmp_path)
-        finally:
-            # Clean up temp file
-            try:
-                os.unlink(tmp_path)
-            except:
-                pass
-        
-        if not transcript:
-            return JSONResponse(status_code=404, content={"error": "Could not extract text from PDF transcript"})
-
-        # Optional: narrow to Pakistan Stock Exchange mentions
-        psx_terms = ["psx", "pakistan stock exchange", "kse", "kse-100", "karachi stock exchange"]
-        if not any(term in transcript.lower() for term in psx_terms):
-            logger.warning("No PSX mentions detected in transcript", extra={"request_id": request_id})
-
-        agent_results = run_agent_pipeline(transcript)
-        summary_text = "\n".join([f"[{step['task']}]\n{step['result']}" for step in agent_results['steps']])
-        latency = int((time.time() - start_time) * 1000)
-
-        logger.info("YouTube transcript analysis completed", extra={"request_id": request_id, "duration_ms": latency})
-        return {
-            "summary": summary_text,
-            "ethical_flags": agent_results["flags"],
-            "latency_ms": latency,
-            "source": "youtube_pdf",
+        # Add metadata
+        result["metadata"] = {
+            "filename": file.filename,
+            "processing_time_sec": round(time.time() - start_time, 2),
+            "model_version": "Lawyer-AI v9.0",
         }
+        
+        return result
+    
     except Exception as e:
-        duration = int((time.time() - start_time) * 1000)
-        logger.error("YouTube transcript analysis failed", extra={"request_id": request_id, "error_type": type(e).__name__, "duration_ms": duration}, exc_info=True)
-        # Record error
-        ERROR_COUNT.inc()
-        return JSONResponse(status_code=500, content={"error": f"YouTube transcript analysis failed: {str(e)}"})
-    finally:
-        # Record request latency
-        duration = time.time() - start_time
-        REQUEST_LATENCY.observe(duration)
+        return {"error": str(e)}
+
+# ---------------------------
+# API Endpoint: Submit Feedback
+# ---------------------------
+@app.post("/lawyer_ai/feedback")
+async def submit_feedback(feedback: FeedbackRequest):
+    """
+    Submits human feedback for analysis improvement.
+    """
+    try:
+        # Create feedback directory if it doesn't exist
+        feedback_dir = "feedback_data"
+        os.makedirs(feedback_dir, exist_ok=True)
+        
+        # Save feedback to file
+        feedback_file = os.path.join(feedback_dir, f"{feedback.analysis_id}_feedback.json")
+        
+        feedback_data = {
+            "analysis_id": feedback.analysis_id,
+            "feedback_type": feedback.feedback_type,
+            "feedback_data": feedback.feedback_data,
+            "user_id": feedback.user_id,
+            "comments": feedback.comments,
+            "timestamp": time.time()
+        }
+        
+        # Append to existing feedback or create new
+        if os.path.exists(feedback_file):
+            with open(feedback_file, "r") as f:
+                existing_feedback = json.load(f)
+                if not isinstance(existing_feedback, list):
+                    existing_feedback = [existing_feedback]
+                existing_feedback.append(feedback_data)
+        else:
+            existing_feedback = [feedback_data]
+        
+        with open(feedback_file, "w") as f:
+            json.dump(existing_feedback, f, indent=2)
+        
+        return {"status": "success", "message": "Feedback submitted successfully", "analysis_id": feedback.analysis_id}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error submitting feedback: {str(e)}")
+
+# ---------------------------
+# API Endpoint: Get Feedback
+# ---------------------------
+@app.get("/lawyer_ai/feedback/{analysis_id}")
+async def get_feedback(analysis_id: str):
+    """
+    Retrieves feedback for a specific analysis.
+    """
+    try:
+        feedback_file = os.path.join("feedback_data", f"{analysis_id}_feedback.json")
+        
+        if not os.path.exists(feedback_file):
+            return {"feedback": [], "message": "No feedback found for this analysis"}
+        
+        with open(feedback_file, "r") as f:
+            feedback_data = json.load(f)
+        
+        return {"feedback": feedback_data, "analysis_id": analysis_id}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving feedback: {str(e)}")
+
+# ---------------------------
+# Root Route
+# ---------------------------
+@app.get("/")
+def root():
+    return {"message": "Welcome to Lawyer-AI (AFIW–ZulfiQode)", "version": "9.0"}
 
 
 if __name__ == "__main__":

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  lawyer_ai:
+    build: ./app
+    container_name: lawyer_ai
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    networks: [afiw_network]
+
+  streamlit:
+    build: ./streamlit_app
+    container_name: streamlit
+    ports:
+      - "8501:8501"
+    depends_on: [lawyer_ai]
+    networks: [afiw_network]
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks: [afiw_network]
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks: [afiw_network]
+
+networks:
+  afiw_network:
+    driver: bridge

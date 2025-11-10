@@ -1,0 +1,49 @@
+# Prometheus Configuration for Lawyer-AI Metrics
+# Place this file in your Prometheus installation directory
+
+global:
+  scrape_interval: 15s  # How often to scrape targets
+  evaluation_interval: 15s  # How often to evaluate rules
+  external_labels:
+    monitor: 'lawyer-ai-monitor'
+
+# Scrape configurations
+scrape_configs:
+  # Lawyer-AI metrics endpoint
+  - job_name: 'lawyer_ai'
+    static_configs:
+      - targets: ['localhost:8001']  # Prometheus HTTP server port
+        labels:
+          service: 'lawyer-ai'
+          environment: 'production'
+    
+    # Optional: Add metrics path if different
+    metrics_path: '/metrics'
+    
+    # Optional: Scrape interval for this job
+    scrape_interval: 10s
+    
+    # Optional: Timeout
+    scrape_timeout: 5s
+
+  # FastAPI application metrics (if you want to scrape both)
+  - job_name: 'afiw_zulfiqode'
+    static_configs:
+      - targets: ['localhost:8000']  # FastAPI server port
+        labels:
+          service: 'afiw-zulfiqode'
+          environment: 'production'
+    
+    metrics_path: '/metrics'
+
+# Optional: Alerting rules
+# rule_files:
+#   - "alerts.yml"
+
+# Optional: Alertmanager configuration
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - localhost:9093
+

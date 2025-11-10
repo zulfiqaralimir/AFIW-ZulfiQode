@@ -1,0 +1,64 @@
+{
+  "id": null,
+  "title": "⚖️ Lawyer-AI Ethical & Risk Intelligence",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "version": 1,
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "Composite Integrity Index (CII)",
+      "targets": [{ "expr": "lawyer_ai_composite_integrity_index" }],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 50 },
+              { "color": "green", "value": 75 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 6 }
+    },
+    {
+      "type": "gauge",
+      "title": "Hallucination Reliability Score (HS)",
+      "targets": [{ "expr": "lawyer_ai_hallucination_score" }],
+      "fieldConfig": {
+        "defaults": { "min": 0, "max": 100 }
+      },
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "OCF Confidence Over Time",
+      "targets": [{ "expr": "lawyer_ai_operational_cash_flow_confidence" }],
+      "gridPos": { "x": 0, "y": 6, "w": 12, "h": 6 },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "unit": "percent"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Risk Confidence Trend",
+      "targets": [{ "expr": "lawyer_ai_risk_confidence" }],
+      "gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Future Performance Confidence",
+      "targets": [{ "expr": "lawyer_ai_future_performance_confidence" }],
+      "gridPos": { "x": 0, "y": 18, "w": 12, "h": 6 }
+    }
+  ]
+}
+

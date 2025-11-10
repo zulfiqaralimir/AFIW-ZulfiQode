@@ -33,7 +33,13 @@ class JSONFormatter(logging.Formatter):
         return json.dumps(log_data)
 
 def setup_logging(level: str = "INFO", json_format: bool = True):
-    """Setup structured logging with JSON or standard format"""
+    """
+    Setup structured logging with JSON or standard format.
+    
+    Args:
+        level: Logging level (default: "INFO")
+        json_format: Use JSON format (default: True)
+    """
     log_level = getattr(logging, level.upper(), logging.INFO)
     
     handler = logging.StreamHandler(sys.stdout)
@@ -54,3 +60,16 @@ def setup_logging(level: str = "INFO", json_format: bool = True):
     logging.getLogger("httpx").setLevel(logging.WARNING)
     
     logging.info("✅ Structured logging initialized", extra={"component": "logger"})
+
+
+def get_logger(name: str):
+    """
+    Get a logger instance for the given name.
+    
+    Args:
+        name: Logger name (typically __name__)
+        
+    Returns:
+        Logger instance
+    """
+    return logging.getLogger(name)

@@ -1,0 +1,30 @@
+# Prometheus Configuration for Lawyer-AI (Local Environment)
+
+global:
+  scrape_interval: 5s          # How often to scrape targets
+  evaluation_interval: 5s
+  external_labels:
+    monitor: 'lawyer-ai-monitor'
+
+scrape_configs:
+  # Main Lawyer-AI FastAPI metrics
+  - job_name: 'lawyer_ai'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    static_configs:
+      - targets: ['127.0.0.1:8001']   # Local FastAPI backend (uvicorn)
+        labels:
+          service: 'lawyer-ai'
+          environment: 'local'
+
+  # (Optional) Secondary service — enable only if something listens on port 8000
+  - job_name: 'afiw_zulfiqode'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    static_configs:
+      - targets: ['127.0.0.1:8000']
+        labels:
+          service: 'afiw-zulfiqode'
+          environment: 'local'
